@@ -42,8 +42,8 @@ def questions_add():
         print(question_number)
         ans = input(tech['name'] + ' - ' + question)
         tech['answers'][question_number] = float(ans)
-        print(db)
         db_save()
+    print(db)
     
 def get_next_question(sort, questions_left):
     largest = sort[0]['name']
@@ -72,8 +72,6 @@ def answer_question(question, answer):
     probabilities = calculate_probabilites(questions_so_far, answers_so_far)
     sort = sorted(
             probabilities, key=lambda p: p['probability'], reverse=True)
-    
-    print("probabilities", probabilities)
     print(sort, type(sort))
     largest = sort[0]['probability']
     runner_up = sort[1]['probability']
@@ -99,9 +97,20 @@ def answer_question(question, answer):
                         continue
                     print('Questions still remaining...')
                     for q in questions_left:
-                        a = input(questions[q]+' ')
+                        while True:
+                            try:
+                                a = input(questions[q]+' ')
+                                if float(a) not in answers:
+                                    print('Invalid response, must be one of 0, 0.25, 0.5, 0.75, 1')
+                                    continue
+                                answers_so_far.append(float(a))
+                                break
+                            except:
+                                print('Please enter a number')
+                                continue
+                            
                         questions_so_far.append(int(q))
-                        answers_so_far.append(float(a))
+                        
                     db_add()
                     new_tech_added = True
                     print('Added using answers from this round')
@@ -168,9 +177,14 @@ if __name__ == '__main__':
         answers_so_far = []
         while True:
             answer = input(questions[question]+ ' ')
-            if float(answer) not in answers:
-                print('Invalid response, must be one of 0, 0.25, 0.5, 0.75, 1')
+            try:
+                if float(answer) not in answers:
+                    print('Invalid response, must be one of 0, 0.25, 0.5, 0.75, 1')
+                    continue
+            except:
+                print('Please enter a number')
                 continue
+                
             question = answer_question(question, float(answer))
             if question == -1:
                 print('===RESTART===')
