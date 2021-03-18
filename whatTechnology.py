@@ -78,6 +78,11 @@ def answer_question(question, answer):
                     if new_tech_added:
                         print('Technology has already been added')
                         continue
+                    print('Questions still remaining...')
+                    for q in questions_left:
+                        a = input(questions[q]+' ')
+                        questions_so_far.append(int(q))
+                        answers_so_far.append(float(a))
                     db_add()
                     new_tech_added = True
                     print('Added using answers from this round')
