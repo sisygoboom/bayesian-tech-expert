@@ -17,8 +17,8 @@ with open('./data/questions.json', 'rb') as file:
 with open('./data/db.pickle', 'rb') as file:
     db = pickle.load(file)
 
-print(db)
-print(questions)
+for q in questions:
+    print(questions.index(q), q)
 
 def db_save():
     with open('data/db.pickle', 'wb') as file:
@@ -38,8 +38,11 @@ def questions_add():
     questions.append(question)
     questions_save()
     for tech in db:
+        question_number = len(questions)-1
+        print(question_number)
         ans = input(tech['name'] + ' - ' + question)
-        tech['answers'][len(answers)-1] = float(ans)
+        tech['answers'][question_number] = float(ans)
+        print(db)
         db_save()
     
     
@@ -48,12 +51,18 @@ def answer_question(question, answer):
     questions_so_far.append(int(question))
     answers_so_far.append(float(answer))
     probabilities = calculate_probabilites(questions_so_far, answers_so_far)
+    sort = sorted(
+            probabilities, key=lambda p: p['probability'], reverse=True)
+    
     print("probabilities", probabilities)
+    print(sort, type(sort))
+    largest = sort[0]['probability']
+    runner_up = sort[1]['probability']
+    significant_difference = largest - runner_up > 0.3
     questions_left = list(set(list(range(len(questions)))) - set(questions_so_far))
-    if len(questions_left) == 0:
-        result = sorted(
-            probabilities, key=lambda p: p['probability'], reverse=True)[0]
-        print(result)
+    out_of_questions = len(questions_left) == 0
+    if out_of_questions or significant_difference:
+        print('\nprediction:\n'+ sort[0]['name'])
         correct = input('Was this correct? (y/n): ')
         if correct.lower() == 'n':
             new_tech_added = False
@@ -61,7 +70,7 @@ def answer_question(question, answer):
                 fix = input("""What do you want to do?
 1) Add new question
 2) Add new technology
-3) Restart game
+3) Continue
     """)
                 if fix == '1':
                     questions_add()
@@ -70,9 +79,14 @@ def answer_question(question, answer):
                         print('Technology has already been added')
                         continue
                     db_add()
+                    new_tech_added = True
                     print('Added using answers from this round')
                 elif fix == '3':
-                    break
+                    if out_of_questions:
+                        break
+                    else:
+                        next_question = random.choice(questions_left)
+                        return next_question
                     
         return -1
     else:
@@ -132,6 +146,7 @@ if __name__ == '__main__':
             answer = input(questions[question]+ ' ')
             if float(answer) not in answers:
                 print('Invalid response, must be one of 0, 0.25, 0.5, 0.75, 1')
+                continue
             question = answer_question(question, float(answer))
             if question == -1:
                 print('===RESTART===')
