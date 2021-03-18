@@ -42,7 +42,6 @@ def questions_add():
         ans = input(tech['name'] + ' - ' + question)
         tech['answers'][question_number] = float(ans)
         db_save()
-    print(db)
     
 def get_next_question(sort, questions_left):
     largest = sort[0]['name']
@@ -53,7 +52,6 @@ def get_next_question(sort, questions_left):
         if i['name'] == runner_up:
             runner_up_answers = i['answers']
     difference = {'index': -1, 'diff': 0}
-    print(largest_answers, runner_up_answers)
     for q in questions_left:
         if q not in largest_answers:
             largest_answers[q] = 0.5
@@ -71,7 +69,6 @@ def answer_question(question, answer):
     probabilities = calculate_probabilites(questions_so_far, answers_so_far)
     sort = sorted(
             probabilities, key=lambda p: p['probability'], reverse=True)
-    print(sort, type(sort))
     largest = sort[0]['probability']
     runner_up = sort[1]['probability']
     significant_difference = largest - runner_up > 0.3
@@ -168,7 +165,6 @@ def tech_answer(tech, question):
     return 0.5
 
 if __name__ == '__main__':
-    print(db)
     print('answers:', answers)
     while True:
         question = 0
