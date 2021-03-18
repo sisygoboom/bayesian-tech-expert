@@ -45,7 +45,26 @@ def questions_add():
         print(db)
         db_save()
     
+def get_next_question(sort, questions_left):
+    largest = sort[0]['name']
+    runner_up = sort[1]['name']
+    for i in db:
+        if i['name'] == largest:
+            largest_answers = i['answers']
+        if i['name'] == runner_up:
+            runner_up_answers = i['answers']
+    difference = {'index': -1, 'diff': 0}
+    print(largest_answers, runner_up_answers)
+    for q in questions_left:
+        if q not in largest_answers:
+            largest_answers[q] = 0.5
+        if q not in runner_up_answers:
+            runner_up_answers[q] = 0.5
+        diff = abs(largest_answers[q] - runner_up_answers[q])
+        if diff > difference['diff']:
+            difference = {'index': q, 'diff': diff}  
     
+    return difference['index']
 
 def answer_question(question, answer):
     questions_so_far.append(int(question))
@@ -90,12 +109,12 @@ def answer_question(question, answer):
                     if out_of_questions:
                         break
                     else:
-                        next_question = random.choice(questions_left)
+                        next_question = get_next_question(sort, questions_left)
                         return next_question
                     
         return -1
     else:
-        next_question = random.choice(questions_left)
+        next_question = get_next_question(sort, questions_left)
         return next_question
 
 def calculate_probabilites(questions_so_far, answers_so_far):
