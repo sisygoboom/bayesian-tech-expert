@@ -15,6 +15,7 @@ parser.add_argument('answers', type=dict)
 parser.add_argument('questions_so_far', type=int, default=[], action='append')
 parser.add_argument('answers_so_far', type=float, default=[], action='append')
 parser.add_argument('name')
+parser.add_argument('question')
 
 
 class Tech(db.Model):
@@ -146,8 +147,35 @@ class AddTech(Resource):
             db.session.commit()
             return {'message': 'Technology successfully added to our database.'}
         else:
-            return {'message': 'Please complete the remaining questions for the new technology.', 'questions_left': questions_left}
+            return {'message': 'Please complete the remaining questions for the new technology.',
+                    'questions_left': questions_left}
+
+
+class AddQuestion(Resource):
+    def post(self):
+        args = parser.parse_args()
+        question = args['question']
+        answers = args['answers']
+
+        techs = db.session.query(Tech).all()
+        if len(techs) != len(answers.keys()):
+            return {
+                'message': 'Please answer the question for all the following technologies.',
+                'techs': [tech.id for tech in techs]
+            }
+
+        db.session.add(Question(text=question))
+        index = db.session.query(Question).order_by(Question.id.desc()).first()
+
+        for tech in techs:
+            db_answers = dict(tech.answers)
+            db_answers[str(index)] = answers[tech.id]
+            tech.answers = db_answers
+        db.session.commit()
+
+        return {'message': 'Success! Question has been added.'}
 
 
 api.add_resource(Answer, '/api/answer')
 api.add_resource(AddTech, '/api/add/tech')
+api.add_resource(AddQuestion, '/api/add/question')
