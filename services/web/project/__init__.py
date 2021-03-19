@@ -11,9 +11,10 @@ db = SQLAlchemy(app)
 api = Api(app)
 
 parser = reqparse.RequestParser()
-parser.add_argument('answers')
+parser.add_argument('answers', type=dict)
 parser.add_argument('questions_so_far', type=int, default=[], action='append')
 parser.add_argument('answers_so_far', type=float, default=[], action='append')
+parser.add_argument('name')
 
 
 class Tech(db.Model):
@@ -131,4 +132,22 @@ class Answer(Resource):
         return difference['index']
 
 
+class AddTech(Resource):
+    def post(self):
+        args = parser.parse_args()
+        name = args['name']
+        answers = args['answers']
+        questions_so_far = [int(q) for q in answers.keys()]
+
+        questions_left = [{'question_id': question.id, 'question': question.text} for question in
+                          db.session.query(Question.id, Question.text).filter(Question.id.notin_(questions_so_far))]
+        if len(questions_left) == 0:
+            db.session.add(Tech(id=name, answers=answers))
+            db.session.commit()
+            return {'message': 'Technology successfully added to our database.'}
+        else:
+            return {'message': 'Please complete the remaining questions for the new technology.', 'questions_left': questions_left}
+
+
 api.add_resource(Answer, '/api/answer')
+api.add_resource(AddTech, '/api/add/tech')
