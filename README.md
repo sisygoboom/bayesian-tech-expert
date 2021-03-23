@@ -6,8 +6,9 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 - yarn
 
 ## Useage
+###Quickstart
 - `chmod +x run.sh`
-- `./run.sh`
+- `./run.sh build`
 - Navigate to [localhost](http://localhost) in your browser.
 - Think of a technology and the beyesian tech expert will attempt to guess what it is by asking questions.
 - If the expert gets it wrong, you may add additional questions, add a new technology or restart the game.
@@ -16,6 +17,27 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 - (optional) `yarn build` in the /ui directory, then copy files in /ui/build to /services/web/project/static
 - `docker-compose -f docker-compose.prod.yml up --build -d` in the projects root directory
 - `docker-compose exec web python manage.py create_db` then `docker-compose exec web python manage.py seed_db` to initialise and populate the DB*
+
+### Accessing the DB
+
+To ssh into the db container execute:
+`./run.sh db`
+or
+`docker-compose exec db psql --username=hello_flask --dbname=hello_flask_prod`
+
+Once in, `\c` to connect.
+
+`\dt` to list tables.
+
+Write regular SQL to view rows.
+
+`\q` to quit.
+
+### Rebuild and restart containers without deleting db changes (static files won't be updated)
+`./run.sh restart`
+
+### View logs
+`./run.sh logs`
 
 ## More info
 
