@@ -2,12 +2,15 @@
 A bayes theorem based expert system that can guess a technology (could be hardware or software) based on your answers to questions.
 
 ## Requirements
-- python 3
-- numpy
+- Docker
+- yarn
 
 ## Useage
-Simply run the script, think of a technology (either from the list below or a new one you want to add) and answer the questions - 0 for no, 0.25 for probably not, 0.5 for "not apliccable"/"don't know", 0.75 for probably and 1 for yes.
-It will then proceed to make a predictions. If the prediction is worng you can either add a new question or add a new technology.
+- `chmod +x run.sh`
+- `./run.sh`
+- Navigate to [localhost](http://localhost) in your browser.
+- Think of a technology and the beyesian tech expert will attempt to guess what it is by asking questions.
+- If the expert gets it wrong, you may add additional questions, add a new technology or restart the game.
 
 Currently the prepared db includes (but is not limited to):
 - JavaScript

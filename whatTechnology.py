@@ -166,6 +166,7 @@ def tech_answer(tech, question):
 
 if __name__ == '__main__':
     print('answers:', answers)
+    print(db)
     while True:
         question = 0
         questions_so_far = []
