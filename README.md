@@ -12,10 +12,10 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 - Think of a technology and the beyesian tech expert will attempt to guess what it is by asking questions.
 - If the expert gets it wrong, you may add additional questions, add a new technology or restart the game.
 
-*If run.sh fails or you are unable to run it, you must follow the following manual steps:
-- (optional) `yarn build` in the /ui directory, then copy files in /ui/build to /services/web/project/static
-- `docker-compose -f docker-compose.prod.yml up --build -d` in the projects root directory
-- `docker-compose exec web python manage.py create_db` then `docker-compose exec web python manage.py seed_db` to initialise and populate the DB*
+*If run.sh fails or you are unable to run it, you must follow the following manual steps:*
+- *(optional) `yarn build` in the /ui directory, then copy files in /ui/build to /services/web/project/static*
+- *`docker-compose -f docker-compose.prod.yml up --build -d` in the projects root directory*
+- *`docker-compose exec web python manage.py create_db` then `docker-compose exec web python manage.py seed_db` to initialise and populate the DB*
 
 ## More info
 
