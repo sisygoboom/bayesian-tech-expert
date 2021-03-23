@@ -6,7 +6,7 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 - yarn
 
 ## Useage
-###Quickstart
+### Quickstart
 - `chmod +x run.sh`
 - `./run.sh build`
 - Navigate to [localhost](http://localhost) in your browser.
