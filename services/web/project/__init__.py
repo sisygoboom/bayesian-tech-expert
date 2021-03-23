@@ -169,7 +169,7 @@ class AddQuestion(Resource):
 
         for tech in techs:
             db_answers = dict(tech.answers)
-            db_answers[str(index)] = answers[tech.id]
+            db_answers[str(index.id)] = answers[tech.id]
             tech.answers = db_answers
         db.session.commit()
 
