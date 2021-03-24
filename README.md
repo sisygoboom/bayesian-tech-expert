@@ -36,6 +36,9 @@ Write regular SQL to view rows.
 ### Rebuild and restart containers without deleting db changes (static files won't be updated)
 `./run.sh restart`
 
+### Stop containers and remove volumes (deletes db changes)
+`./run.sh stop`
+
 ### View logs
 `./run.sh logs`
 
