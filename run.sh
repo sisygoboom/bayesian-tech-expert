@@ -9,7 +9,7 @@ then
     cp -rlf ./build/* ../services/web/project/static
     cd ..
     docker-compose -f docker-compose.prod.yml up --build -d
-    sleep 5
+    sleep 6
     docker-compose exec -T web python manage.py create_db
     docker-compose exec -T web python manage.py seed_db
 fi
