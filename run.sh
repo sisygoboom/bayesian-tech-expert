@@ -3,10 +3,11 @@
 if [ "$1" == "setup" ]
 then
     npm install --global yarn
-    cd ui
-    yarn install
     chmod +x ./services/web/entrypoint.sh
     chmod +x ./services/web/entrypoint.prod.sh
+    cd ui
+    yarn install
+    
 fi
 
 if [ "$1" == "build" ]
