@@ -2,3 +2,4 @@
 * text=auto
 # .gitattributes snippet to force users to use same line endings for project.
 *.sh text
+*.sh eol=lf
