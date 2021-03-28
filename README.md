@@ -4,13 +4,12 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 ## Requirements
 - Docker (you can use `./install-docker.sh` or visit the docker website for binaries)
 - docker-compose 
-- yarn
-- node
+- yarn (only required if building ui)
+- node (only required if building ui)
 
 ## Useage
 ### Quickstart
 - `chmod +x run.sh`
-- `./run.sh setup` to install ui dependancies
 - `./run.sh build`
 - Navigate to [localhost](http://localhost) in your browser.
 
@@ -30,16 +29,6 @@ Make sure that:
 
 To ssh into the db container execute:
 `./run.sh db`
-or
-`docker-compose exec db psql --username=hello_flask --dbname=hello_flask_prod`
-
-Once in, `\c` to connect.
-
-`\dt` to list tables.
-
-Write regular SQL to view rows.
-
-`\q` to quit.
 
 ### Rebuild and restart containers without deleting db changes (static files won't be updated)
 `./run.sh restart`
@@ -49,6 +38,12 @@ Write regular SQL to view rows.
 
 ### View logs
 `./run.sh logs`
+
+### Build project
+`./run.sh build`
+
+### Build project and UI from source
+`./run.sh build -ui`
 
 ## More info
 
