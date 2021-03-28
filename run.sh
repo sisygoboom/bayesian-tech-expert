@@ -2,8 +2,11 @@
 
 if [ "$1" == "setup" ]
 then
+    npm install --global yarn
     cd ui
     yarn install
+    chmod +x ./services/web/entrypoint.sh
+    chmod +x ./services/web/entrypoint.prod.sh
 fi
 
 if [ "$1" == "build" ]
@@ -11,7 +14,6 @@ then
     docker-compose -f docker-compose.prod.yml down -v
     cd ui
     yarn build
-    rm -r ../services/web/project/static/*
     cp -rlf ./build/* ../services/web/project/static
     cd ..
     docker-compose -f docker-compose.prod.yml up --build -d
