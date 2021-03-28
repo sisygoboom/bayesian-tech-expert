@@ -12,11 +12,13 @@ then
         cd ..
     fi
     
+    chmod +x ./services/web/entrypoint.sh
+    chmod +x ./services/web/entrypoint.prod.sh
+    
     docker-compose -f docker-compose.prod.yml down -v
     docker-compose -f docker-compose.prod.yml up --build -d
     sleep 5
-    chmod +x ./services/web/entrypoint.sh
-    chmod +x ./services/web/entrypoint.prod.sh
+    
     docker-compose exec -T web python manage.py create_db
     docker-compose exec -T web python manage.py seed_db
 fi
