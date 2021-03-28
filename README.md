@@ -2,12 +2,13 @@
 A bayes theorem based expert system that can guess a technology (could be hardware or software) based on your answers to questions.
 
 ## Requirements
-- Docker
+- Docker + docker-compose (you can use `./install-docker.sh` or visit the docker website for binaries)
 - yarn
 
 ## Useage
 ### Quickstart
 - `chmod +x run.sh`
+- `./run.sh setup` to install ui dependancies
 - `./run.sh build`
 - Navigate to [localhost](http://localhost) in your browser.
 - Think of a technology and the beyesian tech expert will attempt to guess what it is by asking questions.

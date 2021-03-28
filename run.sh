@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" == "setup" ]
+then
+    cd ui
+    yarn install
+fi
+
 if [ "$1" == "build" ]
 then
     docker-compose -f docker-compose.prod.yml down -v
