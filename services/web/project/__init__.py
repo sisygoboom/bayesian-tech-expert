@@ -65,7 +65,7 @@ class Answer(Resource):
         if out_of_questions or significant_difference:
             return {'prediction': sort[0]['name']}
 
-        question_id = self.get_next_question(sort, questions_left)
+        question_id = self.get_next_question(sort, questions_left, techs)
         question = Question.query.get(int(question_id))
         return {'question': question.text, 'question_id': question.id, 'probabilities': probabilities}
 
@@ -108,22 +108,29 @@ class Answer(Resource):
             return tech['answers'][str(question)]
         return 0.5
 
-    def get_next_question(self, sort, questions_left):
+    def get_next_question(self, sort, questions_left, db):
         largest = sort[0]['name']
         runner_up = sort[1]['name']
+        for i in db:
+            if i['name'] == largest:
+                largest_answers = i['answers']
+            if i['name'] == runner_up:
+                runner_up_answers = i['answers']
+        difference = {'index': -1, 'diff': 0}
+        for q in questions_left:
+            q = str(q)
+            if q not in largest_answers:
+                largest_answers[q] = 0.5
+            if q not in runner_up_answers:
+                runner_up_answers[q] = 0.5
+            diff = abs(largest_answers[q] - runner_up_answers[q])
+            if diff > difference['diff']:
+                difference = {'index': q, 'diff': diff}
 
-        largest_answers = db.session.query(Tech.answers).filter(Tech.id == largest).first()
-        largest_answers = list(largest_answers['answers'].values())
-        largest_answers = np.array([i if j in questions_left else 0.5 for j, i in enumerate(largest_answers)])
+        if difference['index'] == -1:
+            return random.choice(questions_left)
 
-        runner_up_answers = db.session.query(Tech.answers).filter(Tech.id == runner_up).first()
-        runner_up_answers = list(runner_up_answers['answers'].values())
-        runner_up_answers = np.array([i if j in questions_left else 0.5 for j, i in enumerate(runner_up_answers)])
-
-        Q = np.argmax(np.absolute(largest_answers - runner_up_answers))
-        if Q not in questions_left:
-            Q = random.choice(questions_left)
-        return Q
+        return difference['index']
 
 
 class AddTech(Resource):
