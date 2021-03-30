@@ -13,10 +13,11 @@ A bayes theorem based expert system that can guess a technology (could be hardwa
 - `./run.sh build`
 - Navigate to [localhost](http://localhost) in your browser.
 
-*If run.sh fails or you are unable to run it, you must follow the following manual steps:*
-- *(optional) `yarn install` then `yarn build` in the /ui directory, then copy files in /ui/build to /services/web/project/static*
+**If run.sh fails or you are unable to run it, you must follow the following manual steps:**
 - *`docker-compose -f docker-compose.prod.yml up --build -d` in the projects root directory*
 - *`docker-compose exec web python manage.py create_db` then `docker-compose exec web python manage.py seed_db` to initialise and populate the DB*
+
+**If you can't get the docker version to work at all, there is a text-based version available by running `whatTechnology.py`**
 
 Make sure that:
 - All requirements listed above are installed and up to date
